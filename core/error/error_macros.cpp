@@ -128,3 +128,16 @@ void _err_print_index_error(const char *p_function, const char *p_file, int p_li
 void _err_flush_stdout() {
 	fflush(stdout);
 }
+
+// KNICK-KNACK FIX - need this to link successfuly (on macOS ARM at least..)
+#ifdef DEV_ENABLED
+void std::__libcpp_verbose_abort(char const* format, ...) {
+  va_list list;
+  va_start(list, format);
+  std::vfprintf(stderr, format, list);
+  va_end(list);
+
+  std::abort();
+}
+#endif
+// END KNICK-KNACK FIX
